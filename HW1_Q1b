@@ -1,0 +1,41 @@
+clc
+clear all
+hold on
+
+years = linspace(1998,2008,11);
+
+tuition = [21300,23057,24441,25917,27204,28564,29847,31200,32994,34800,36030]
+
+scatter(years,tuition)
+
+x = linspace(1996,2012,200)
+y = zeros(size(x))
+
+for k = 1:length(y)
+    y(k) = Lint(x(k),years,tuition)
+end
+
+plot(x,y)
+xlim([1997,2011])
+ylim([15000 40000])
+xlabel("Year")
+ylabel("Tuition (USD)")
+title("Lagrange Interpolation of Tuition Inflation at St. Anford University")
+
+function out = Lint(a,x,y)
+if (length(x)~=length(y))
+    print("input lengths must match")
+else
+    X = 0
+    msums = ones(size(x));
+    for j = 1:length(x)
+        for i = 1:length(x)
+            if (i~=j)
+                msums(j) = msums(j)*((a-x(i))/(x(j)-x(i)));
+            end
+        end
+        X = X + (msums(j)*y(j));
+    end
+end
+out = X
+end
